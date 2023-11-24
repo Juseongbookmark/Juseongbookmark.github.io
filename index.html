@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동화책 사이트</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+</head>
+<body>
+<body>
+    <header>
+    	<h1>맛깔나게 재밌는 동화</h1>
+    </header>
+    <article>
+    
+    <div id="books-container">
+    <img class="book-cover" src="./01_human_tale/cover.jpg" alt="01_human_tale"	onclick="selectBook(0)">
+    <img class="book-cover" src="./02_AI_tale/cover.jpg" alt="02_AI_tale" onclick="selectBook(1)">
+    <!-- 다른 동화책들을 필요에 따라 추가 -->
+    </div>
+
+    <div id="story-container">
+        <img id="story-img" src="" alt="동화책 이미지">
+        <audio id="story-audio" controls>
+        <source src="" type="audio/wav">
+        Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div id="button">
+        <div id="back">
+            <button id="back-button" onclick="previousPage()">이전 페이지</button>
+        </div>
+        <div id="home">
+            <button id="home-button" onclick="showBooks()">첫 화면으로</button>
+        </div>
+        <div id="next">
+            <button id="next-button" onclick="nextPage()">다음 페이지</button>
+        </div>
+    </div>
+    </article>    
+    
+    <footer>LPCS 심화탐구 주성고-주성책갈피</footer>
+</body>
+
+<script>
+    const booksContainer = document.getElementById('books-container');
+    const storyContainer = document.getElementById('story-container');
+    const storyImg = document.getElementById('story-img');
+    const storyAudio = document.getElementById('story-audio');
+    const nextButton = document.getElementById('next-button');
+    const backButton = document.getElementById('back-button');
+
+
+    // 동화책 정보를 담은 객체 배열
+    const books = [
+        {
+            cover: './01_human_tale/cover.jpg',
+            pages: [
+                { image: './01_human_tale/scene01.jpg', audio: './01_human_tale/story01.mp3' },
+                { image: './01_human_tale/scene02.jpg', audio: './01_human_tale/story02.mp3' },
+                { image: './01_human_tale/scene03.jpg', audio: './01_human_tale/story03.mp3' },
+                { image: './01_human_tale/scene04.jpg', audio: './01_human_tale/story04.mp3' },
+                { image: './01_human_tale/scene05.jpg', audio: './01_human_tale/story05.mp3' },
+                { image: './01_human_tale/scene06.jpg', audio: './01_human_tale/story06.mp3' },
+                { image: './01_human_tale/scene07.jpg', audio: './01_human_tale/story07.mp3' },
+                { image: './01_human_tale/scene08.jpg', audio: './01_human_tale/story08.mp3' },
+                { image: './01_human_tale/scene09.jpg', audio: './01_human_tale/story09.mp3' },
+                { image: './01_human_tale/scene10.jpg', audio: './01_human_tale/story10.mp3' },
+                { image: './01_human_tale/scene11.jpg', audio: './01_human_tale/story11.mp3' },
+                { image: './01_human_tale/scene12.jpg', audio: './01_human_tale/story12.mp3' },
+                { image: './01_human_tale/scene13.jpg', audio: './01_human_tale/story13.mp3' },
+                { image: './01_human_tale/scene14.jpg', audio: './01_human_tale/story14.mp3' },
+                { image: './01_human_tale/scene15.jpg', audio: './01_human_tale/story15.mp3' },
+                { image: './01_human_tale/scene16.jpg', audio: './01_human_tale/story16.mp3' },
+                { image: './01_human_tale/scene17.jpg', audio: './01_human_tale/story17.m4a' }
+                // If story17 is an m4a file, make sure to keep the correct extension as shown.
+                // 추가 페이지들을 필요에 따라 계속 추가할 수 있습니다.
+            ]
+        },
+        {
+            cover: './02_AI_tale/cover.jpg',
+            pages: [
+                {image: './02_AI_tale/scene1.jpg', audio: './02_AI_tale/story1.mp3'},
+                {image: './02_AI_tale/scene2.jpg', audio: './02_AI_tale/story2.mp3'},
+                {image: './02_AI_tale/scene3.jpg', audio: './02_AI_tale/story3.mp3'}
+            ]
+        }
+        // 다른 동화책들을 필요에 따라 추가
+    ];
+
+
+    let currentBookIndex = -1; // -1은 아무 책도 선택되지 않은 상태를 나타냅니다.
+    let currentPageIndex = 0;
+
+
+    // 동화책 선택 시 호출되는 함수
+    function selectBook(index) {
+    currentBookIndex = index;
+    currentPageIndex = 0; // Start at the first page
+    updateUI();
+    }   
+
+    // 첫 페이지로 이동하는 함수
+    function showStoryPage() {
+        currentPageIndex = 0;
+        updateUI();
+    }
+
+    // 다음 페이지로 이동하는 함수
+    function nextPage() {
+        currentPageIndex++;
+
+
+        if (currentPageIndex === books[currentBookIndex].pages.length) {
+            // 동화의 마지막 페이지인 경우
+            currentBookIndex = -1;
+            showBooks();
+        } else {
+            updateUI();
+        }
+    }
+
+    // 이전 페이지로 이동하는 함수
+    function previousPage() {
+        if (currentPageIndex > 0) {
+            currentPageIndex--; // 현재 페이지 인덱스를 감소시킴
+            updateUI();
+        } else {
+            // 현재 페이지가 첫 페이지인 경우, 동화책 선택 화면으로 돌아감
+            showBooks();
+        }
+}
+    // 동화책 선택 화면 표시
+    function showBooks() {
+        booksContainer.style.display = 'block';
+        storyContainer.style.display = 'none';
+        backButton.style.display = 'none';
+    }
+
+
+    // 동화 내용 화면 표시
+    function showStory() {
+        booksContainer.style.display = 'none';
+        storyContainer.style.display = 'block';
+        backButton.style.display = 'block';
+    }
+
+
+    function updateUI() {
+    if (currentBookIndex !== -1) {
+        // 동화책이 선택된 경우
+        const book = books[currentBookIndex];
+        const currentPage = book.pages[currentPageIndex];
+        storyImg.src = currentPage.image;
+        storyAudio.innerHTML = ''; // Clear existing source elements
+        const audioType = currentPage.audio.endsWith('.mp3') ? 'audio/mpeg' : 'audio/mp4';
+        storyAudio.appendChild(new AudioSource(currentPage.audio, audioType));
+        storyAudio.load();
+        showStory();
+    } else {
+        // 동화책 선택 화면인 경우
+        showBooks();
+    }
+}
+
+function AudioSource(src, type) {
+    const source = document.createElement('source');
+    source.src = src;
+    source.type = type;
+    return source;
+}
+
+
+
+    // 뒤로 가기 함수
+    function goBack() {
+        currentBookIndex = -1;
+        showBooks();
+    }
+
+
+    // 초기 로딩 시 동화책 선택 화면 표시
+    showBooks();
+</script>
+
+
+</body>
+</html>
