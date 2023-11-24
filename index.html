@@ -39,6 +39,12 @@
             <button id="next-button" onclick="nextPage()">다음 페이지</button>
         </div>
     </div>
+    <div id="auto-play-option">
+        <label>
+            <input type="checkbox" id="autoplay-checkbox">
+            오디오 자동 재생 허용
+        </label>
+    </div>
     </article>    
     
     <footer>LPCS 심화탐구 주성고-주성책갈피</footer>
@@ -51,6 +57,15 @@
     const storyAudio = document.getElementById('story-audio');
     const nextButton = document.getElementById('next-button');
     const backButton = document.getElementById('back-button');
+
+    document.getElementById('autoplay-checkbox').addEventListener('change', function() {
+        if(this.checked) {
+            // 자동 재생 활성화
+            if(storyAudio.readyState >= 2) { // 오디오가 로드된 상태인지 확인
+                storyAudio.play();
+            }
+        }
+    });
 
 
     // 동화책 정보를 담은 객체 배열
@@ -148,29 +163,38 @@
     }
 
 
-    function updateUI() {
-    if (currentBookIndex !== -1) {
-        // 동화책이 선택된 경우
-        const book = books[currentBookIndex];
-        const currentPage = book.pages[currentPageIndex];
-        storyImg.src = currentPage.image;
-        storyAudio.innerHTML = ''; // Clear existing source elements
-        const audioType = currentPage.audio.endsWith('.mp3') ? 'audio/mpeg' : 'audio/mp4';
-        storyAudio.appendChild(new AudioSource(currentPage.audio, audioType));
-        storyAudio.load();
-        showStory();
-    } else {
-        // 동화책 선택 화면인 경우
-        showBooks();
-    }
-}
+    // UI 업데이트 함수
+        function updateUI() {
+        if (currentBookIndex !== -1) {
+            // 동화책이 선택된 경우
+            const book = books[currentBookIndex];
+            const currentPage = book.pages[currentPageIndex];
+            storyImg.src = currentPage.image;
+            storyAudio.innerHTML = ''; // 이전 오디오 소스 제거
+            const audioType = currentPage.audio.endsWith('.mp3') ? 'audio/mpeg' : 'audio/mp4';
+            storyAudio.appendChild(new AudioSource(currentPage.audio, audioType));
+            storyAudio.load();
+            showStory();
 
-function AudioSource(src, type) {
-    const source = document.createElement('source');
-    source.src = src;
-    source.type = type;
-    return source;
-}
+            // 체크박스가 체크되어 있으면 오디오 자동 재생
+            var autoplay = document.getElementById('autoplay-checkbox').checked;
+            if (autoplay) {
+                storyAudio.play();
+            }
+        } 
+        else {
+            // 동화책 선택 화면인 경우
+            showBooks();
+        }
+        }   
+
+
+    function AudioSource(src, type) {
+        const source = document.createElement('source');
+        source.src = src;
+        source.type = type;
+       return source;
+    }
 
 
 
