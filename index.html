@@ -19,19 +19,6 @@
         .book-cover:hover {
             transform: scale(1.1);
         }
-        .book-title {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
-        .book-cover:hover .book-title {
-            display: block;
-        }
     </style>
 </head>
 </head>
@@ -43,14 +30,8 @@
     <article>
     
     <div id="books-container">
-        <div class="book-cover" onclick="selectBook(0)">
-            <img src="./01_human_tale/cover.jpg" alt="01_human_tale">
-            <div class="book-title">우리의 숲을 돌려줘!</div>
-        </div>
-        <div class="book-cover" onclick="selectBook(1)">
-            <img src="./02_AI_tale/cover.jpg" alt="02_AI_tale">
-            <div class="book-title">신비한 숲의 친구</div>
-        </div>
+        <img class="book-cover" src="./01_human_tale/cover.jpg" alt="01_human_tale"	onclick="selectBook(0)">
+        <img class="book-cover" src="./02_AI_tale/cover.jpg" alt="02_AI_tale" onclick="selectBook(1)">
     <!-- 다른 동화책들을 필요에 따라 추가 -->
     </div>
 
